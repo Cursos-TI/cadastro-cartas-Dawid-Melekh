@@ -6,7 +6,9 @@ struct Carta
     int populacao;
     float area;
     float pib;
-    int pontosTuristicos;
+    long int pontosTuristicos;
+    float densidadePopulacional;
+    float pibPerCapita;
 };
 
 int main()
@@ -14,7 +16,6 @@ int main()
     struct Carta cartas[32];
     int indice = 0;
 
-    //percorre cada estado para por as letras de "A a "H"
     for (char estado = 'A'; estado <= 'H'; estado++)
     {
         for (int cidade = 1; cidade <= 4; cidade++)
@@ -36,8 +37,9 @@ int main()
             scanf("%f", &cartas[indice].pib);
 
             printf("Pontos Turísticos: ");
-            scanf("%d", &cartas[indice].pontosTuristicos);
+            scanf("%ld", &cartas[indice].pontosTuristicos);
 
+            //incrementa o indice, garantindo que sempre que o for percorrer o codigo o indice aumente mais 1
             indice++;
         }
     }
@@ -46,14 +48,20 @@ int main()
 
     printf("\n========== CARTAS CADASTRADAS ==========\n");
 
-    //mostras as 32 cartas cadastradas
     for (int i = 0; i < 32; i++)
     {
+        //caluculo da densidade populaciona e do PIB PER CAPITA
+        cartas[i].densidadePopulacional = (float)cartas[i].populacao / cartas[i].area;
+        cartas[i].pibPerCapita = cartas[i].pib / cartas[i].populacao;
+        
+        //exibição dos dados das cartas
         printf("\n========= Carta %s =========\n", cartas[i].codigo);
         printf("\n População: %d\n----------------------", cartas[i].populacao);
         printf("\n Área: %.2f\n----------------------", cartas[i].area);
         printf("\n PIB: %.2f\n----------------------", cartas[i].pib);
-        printf("\n Pontos Turísticos: %d\n----------------------", cartas[i].pontosTuristicos);
+        printf("\n Pontos Turísticos: %ld\n----------------------", cartas[i].pontosTuristicos);
+        printf("\nDensidade Populacional: %.2f\n----------------------", cartas[i].densidadePopulacional);
+        printf("\nPIB PER CAPITA: %.2f\n----------------------", cartas[i].pibPerCapita);
     }
 
     return 0;
