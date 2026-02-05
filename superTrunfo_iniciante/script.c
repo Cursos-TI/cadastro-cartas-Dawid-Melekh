@@ -1,3 +1,4 @@
+// escrevi errado, era do nivel mestre
 // Inclusão das bibliotecas padrão de entrada/saída e manipulação de strings
 #include <stdio.h>
 #include <string.h>
