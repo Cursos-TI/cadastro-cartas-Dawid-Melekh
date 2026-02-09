@@ -1,7 +1,8 @@
-// escrevi errado, era do nivel mestre
+
 // Inclusão das bibliotecas padrão de entrada/saída e manipulação de strings
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 // Estrutura que representa uma carta do jogo
 struct Carta
@@ -27,6 +28,10 @@ int main()
     {
         for (int cidade = 1; cidade <= 4; cidade++)
         {
+
+            char buffer[100];
+            int valido;
+
             // Cria o código da carta, ex: A01, B03, etc.
             sprintf(cartas[indice].codigo, "%c%02d", estado, cidade);
 
@@ -34,19 +39,69 @@ int main()
 
             // Recebe do usuário a quantidade da população
             printf("\nPopulação: ");
-            scanf("%lld", &cartas[indice].populacao);
+            do
+            {
+                fgets(buffer, sizeof(buffer), stdin);
+                cartas[indice].populacao = atoll(buffer);
+                valido = (cartas[indice].populacao > 0);
+                if (!valido)
+                    printf("Valor inválido! Digite novamente: ");
+            } while (!valido);
 
             // Recebe do usuário o tamanho da área
             printf("Área: ");
-            scanf("%f", &cartas[indice].area);
+            do
+            {
+                fgets(buffer, sizeof(buffer), stdin);
+                cartas[indice].area = atoll(buffer);
+                valido = (cartas[indice].area > 0);
+                if (!valido)
+                    printf("Valor inválido! Digite novamente: ");
+            } while (!valido);
 
             // Recebe do usuário o PIB
             printf("PIB: ");
-            scanf("%f", &cartas[indice].pib);
+            do
+            {
+                fgets(buffer, sizeof(buffer), stdin);
+                cartas[indice].pib = atoll(buffer);
+                valido = (cartas[indice].pib > 0);
+                if (!valido)
+                    printf("Valor inválido! Digite novamente: ");
+            } while (!valido);
 
             // Recebe do usuário a quantidade de pontos turísticos
             printf("Pontos Turísticos: ");
-            scanf("%ld", &cartas[indice].pontosTuristicos);
+            do
+            {
+                fgets(buffer, sizeof(buffer), stdin);
+                cartas[indice].pontosTuristicos = atoll(buffer);
+                valido = (cartas[indice].pontosTuristicos > 0);
+                if (!valido)
+                    printf("Valor inválido! Digite novamente: ");
+            } while (!valido);
+
+            // Verifica se a população não é 0 para evitar divisão por zero
+            if (cartas[indice].populacao > 0)
+            {
+                // Se a população for maior que 0, faz o cálculo do PIB per capita
+                cartas[indice].pibPerCapita = cartas[indice].pib / cartas[indice].populacao;
+            }
+            else
+            {
+                // Se a população for menor ou igual a 0, PIB per capita recebe 0
+                cartas[indice].pibPerCapita = 0;
+            }
+
+            // Calcula a densidade populacional se a área for maior que 0
+            if (cartas[indice].area > 0)
+            {
+                cartas[indice].densidadePopulacional = cartas[indice].populacao / cartas[indice].area;
+            }
+            else
+            {
+                cartas[indice].densidadePopulacional = 0;
+            }
 
             // Cálculo do super poder da carta
             cartas[indice].superPoder =
@@ -64,29 +119,6 @@ int main()
 
     for (int i = 0; i < indice; i++)
     {
-
-        // Verifica se a população não é 0 para evitar divisão por zero
-        if (cartas[i].populacao > 0)
-        {
-            // Se a população for maior que 0, faz o cálculo do PIB per capita
-            cartas[i].pibPerCapita = cartas[i].pib / cartas[i].populacao;
-        }
-        else
-        {
-            // Se a população for menor ou igual a 0, PIB per capita recebe 0
-            cartas[i].pibPerCapita = 0;
-        }
-
-        // Calcula a densidade populacional se a área for maior que 0
-        if (cartas[i].area > 0)
-        {
-            cartas[i].densidadePopulacional = cartas[i].populacao / cartas[i].area;
-        }
-        else
-        {
-            cartas[i].densidadePopulacional = 0;
-        }
-
         // Exibe os dados da carta
         printf("\n========= Carta %s =========\n", cartas[i].codigo);
         printf("\n População: %lld\n----------------------", cartas[i].populacao);
@@ -95,7 +127,7 @@ int main()
         printf("\n Pontos Turísticos: %ld\n----------------------", cartas[i].pontosTuristicos);
         printf("\nDensidade Populacional: %.2f\n----------------------", cartas[i].densidadePopulacional);
         printf("\nPIB PER CAPITA: %.2f\n----------------------", cartas[i].pibPerCapita);
-        printf("\n Poder da Carta: %.2f\n", cartas[i].superPoder);
+        printf("\n Poder da Carta: %.2lf\n", cartas[i].superPoder);
     }
 
     // Variáveis para armazenar os códigos das cartas escolhidas pelo usuário
@@ -103,8 +135,8 @@ int main()
     int cartaEscolhida1 = -1, cartaEscolhida2 = -1;
 
     // Solicita ao usuário que escolha duas cartas para a batalha
-    printf("\nEscolha a primeira carta (ex: A01): ");
-    scanf("%3s\n", carta1);
+    printf("Escolha a primeira carta (ex: A01): ");
+    scanf("%3s", carta1);
     printf("Escolha a segunda carta (ex: B02): ");
     scanf("%3s", carta2);
 
