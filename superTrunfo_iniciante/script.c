@@ -2,7 +2,6 @@
 // Inclusão das bibliotecas padrão de entrada/saída e manipulação de strings
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
 // Estrutura que representa uma carta do jogo
 struct Carta
@@ -29,9 +28,6 @@ int main()
         for (int cidade = 1; cidade <= 4; cidade++)
         {
 
-            char buffer[100];
-            int valido;
-
             // Cria o código da carta, ex: A01, B03, etc.
             sprintf(cartas[indice].codigo, "%c%02d", estado, cidade);
 
@@ -39,47 +35,39 @@ int main()
 
             // Recebe do usuário a quantidade da população
             printf("\nPopulação: ");
-            do
+            while (scanf("%lld", &cartas[indice].populacao) != 1 || cartas[indice].populacao <= 0)
             {
-                fgets(buffer, sizeof(buffer), stdin);
-                cartas[indice].populacao = atoll(buffer);
-                valido = (cartas[indice].populacao > 0);
-                if (!valido)
-                    printf("Valor inválido! Digite novamente: ");
-            } while (!valido);
+                printf("Valor inválido! Digite novamente: ");
+                while (getchar() != '\n')
+                    ; // Limpa o buffer
+            }
 
             // Recebe do usuário o tamanho da área
             printf("Área: ");
-            do
+            while (scanf("%f", &cartas[indice].area) != 1 || cartas[indice].area <= 0)
             {
-                fgets(buffer, sizeof(buffer), stdin);
-                cartas[indice].area = atoll(buffer);
-                valido = (cartas[indice].area > 0);
-                if (!valido)
-                    printf("Valor inválido! Digite novamente: ");
-            } while (!valido);
+                printf("Valor inválido! Digite novamente: ");
+                while (getchar() != '\n')
+                    ;
+            }
 
             // Recebe do usuário o PIB
             printf("PIB: ");
-            do
+            while (scanf("%f", &cartas[indice].pib) != 1 || cartas[indice].pib <= 0)
             {
-                fgets(buffer, sizeof(buffer), stdin);
-                cartas[indice].pib = atoll(buffer);
-                valido = (cartas[indice].pib > 0);
-                if (!valido)
-                    printf("Valor inválido! Digite novamente: ");
-            } while (!valido);
+                printf("Valor inválido! Digite novamente: ");
+                while (getchar() != '\n')
+                    ;
+            }
 
             // Recebe do usuário a quantidade de pontos turísticos
             printf("Pontos Turísticos: ");
-            do
+            while (scanf("%ld", &cartas[indice].pontosTuristicos) != 1 || cartas[indice].pontosTuristicos <= 0)
             {
-                fgets(buffer, sizeof(buffer), stdin);
-                cartas[indice].pontosTuristicos = atoll(buffer);
-                valido = (cartas[indice].pontosTuristicos > 0);
-                if (!valido)
-                    printf("Valor inválido! Digite novamente: ");
-            } while (!valido);
+                printf("Valor inválido! Digite novamente: ");
+                while (getchar() != '\n')
+                    ;
+            }
 
             // Verifica se a população não é 0 para evitar divisão por zero
             if (cartas[indice].populacao > 0)
@@ -167,69 +155,155 @@ int main()
 
     /* ================== COMPARAÇÕES ================== */
     printf("\n========== BATALHA DAS CARTAS ==========\n");
+    printf("Carta %s  VS  Carta %s\n", c1.codigo, c2.codigo);
+
+    // Contadores de vitórias
+    int pontos1 = 0, pontos2 = 0;
 
     // Densidade Populacional: MENOR vence
-    printf("\nDensidade Populacional (MENOR vence):\n");
+    printf("\n--- Densidade Populacional (MENOR VENCE) ---\n");
+    printf("%s: %.2f  |  %s: %.2f\n", c1.codigo, c1.densidadePopulacional, c2.codigo, c2.densidadePopulacional);
     if (c1.densidadePopulacional < c2.densidadePopulacional)
-        printf("Vencedora: %s\n", c1.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c1.codigo);
+        pontos1++;
+    }
     else if (c2.densidadePopulacional < c1.densidadePopulacional)
-        printf("Vencedora: %s\n", c2.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c2.codigo);
+        pontos2++;
+    }
     else
         printf("Empate!\n");
 
     // População: MAIOR vence
-    printf("\nPopulação (MAIOR vence):\n");
+    printf("\n--- População (MAIOR VENCE) ---\n");
+    printf("%s: %lld  |  %s: %lld\n", c1.codigo, c1.populacao, c2.codigo, c2.populacao);
     if (c1.populacao > c2.populacao)
-        printf("Vencedora: %s\n", c1.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c1.codigo);
+        pontos1++;
+    }
     else if (c2.populacao > c1.populacao)
-        printf("Vencedora: %s\n", c2.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c2.codigo);
+        pontos2++;
+    }
     else
         printf("Empate!\n");
 
     // Área: MAIOR vence
-    printf("\nÁrea (MAIOR vence):\n");
+    printf("\n--- Área (MAIOR VENCE) ---\n");
+    printf("%s: %.2f  |  %s: %.2f\n", c1.codigo, c1.area, c2.codigo, c2.area);
     if (c1.area > c2.area)
-        printf("Vencedora: %s\n", c1.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c1.codigo);
+        pontos1++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else if (c2.area > c1.area)
-        printf("Vencedora: %s\n", c2.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c2.codigo);
+        pontos2++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else
         printf("Empate!\n");
 
     // PIB: MAIOR vence
-    printf("\nPIB (MAIOR vence):\n");
+    printf("\n--- PIB (MAIOR VENCE) ---\n");
+    printf("%s: %.2f  |  %s: %.2f\n", c1.codigo, c1.pib, c2.codigo, c2.pib);
     if (c1.pib > c2.pib)
-        printf("Vencedora: %s\n", c1.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c1.codigo);
+        pontos1++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else if (c2.pib > c1.pib)
-        printf("Vencedora: %s\n", c2.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c2.codigo);
+        pontos2++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else
         printf("Empate!\n");
 
     // Pontos Turísticos: MAIOR vence
-    printf("\nPontos Turísticos (MAIOR vence):\n");
+    printf("\n--- Pontos Turísticos (MAIOR VENCE) ---\n");
+    printf("%s: %ld  |  %s: %ld\n", c1.codigo, c1.pontosTuristicos, c2.codigo, c2.pontosTuristicos);
     if (c1.pontosTuristicos > c2.pontosTuristicos)
-        printf("Vencedora: %s\n", c1.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c1.codigo);
+        pontos1++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else if (c2.pontosTuristicos > c1.pontosTuristicos)
-        printf("Vencedora: %s\n", c2.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c2.codigo);
+        pontos2++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else
         printf("Empate!\n");
 
     // PIB per Capita: MAIOR vence
-    printf("\nPIB per Capita (MAIOR vence):\n");
+    printf("\n--- PIB per Capita (MAIOR VENCE) ---\n");
+    printf("%s: %.2f  |  %s: %.2f\n", c1.codigo, c1.pibPerCapita, c2.codigo, c2.pibPerCapita);
     if (c1.pibPerCapita > c2.pibPerCapita)
-        printf("Vencedora: %s\n", c1.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c1.codigo);
+        pontos1++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else if (c2.pibPerCapita > c1.pibPerCapita)
-        printf("Vencedora: %s\n", c2.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c2.codigo);
+        pontos2++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else
         printf("Empate!\n");
 
     // Super Poder: MAIOR vence
-    printf("\nSuper Poder (MAIOR vence):\n");
+    printf("\n--- Super Poder (MAIOR VENCE) ---\n");
+    printf("%s: %.2lf  |  %s: %.2lf\n", c1.codigo, c1.superPoder, c2.codigo, c2.superPoder);
     if (c1.superPoder > c2.superPoder)
-        printf("Vencedora: %s\n", c1.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c1.codigo);
+        pontos1++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else if (c2.superPoder > c1.superPoder)
-        printf("Vencedora: %s\n", c2.codigo);
+    {
+        printf("Vencedora: %s (+1 ponto)\n", c2.codigo);
+        pontos2++;
+        printf("precione qualquer tecla para continuar");
+        scanf("");
+    }
     else
         printf("Empate!\n");
+
+    // Resultado final
+    printf("\n========== RESULTADO FINAL ==========\n");
+    printf("Carta %s: %d pontos\n", c1.codigo, pontos1);
+    printf("Carta %s: %d pontos\n", c2.codigo, pontos2);
+    printf("\n");
+
+    if (pontos1 > pontos2)
+        printf("A CARTA VENCEDORA E: %s com %d pontos!\n", c1.codigo, pontos1);
+    else if (pontos2 > pontos1)
+        printf("A CARTA VENCEDORA E: %s com %d pontos!\n", c2.codigo, pontos2);
+    else
+        printf("EMPATE! Ambas as cartas ficaram com %d pontos!\n", pontos1);
 
     return 0;
 }
